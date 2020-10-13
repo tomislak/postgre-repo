@@ -1,0 +1,46 @@
+$ yum list installed | grep postgres
+postgresql12.x86_64               12.4-1PGDG.rhel7               @pgdg12
+postgresql12-devel.x86_64         12.4-1PGDG.rhel7               @pgdg12
+postgresql12-libs.x86_64          12.4-1PGDG.rhel7               @pgdg12
+postgresql12-server.x86_64        12.4-1PGDG.rhel7               @pgdg12
+
+# yum install libpq5.x86_64
+# /usr/pgsql-12/bin/pg_config --version
+PostgreSQL 12.4
+
+$ export PATH=/usr/pgsql-12/bin/:$PATH
+$ pip install psycopg2
+
+$ initdb -D /srv/postgres12/dataStars
+
+# grep PGDATA /usr/lib/systemd/system/postgresql-12.service
+Environment=PGDATA=/srv/postgres12/dataStars
+
+# systemctl daemon-reload
+# systemctl start postgresql-12
+
+$ psql
+postgres=# CREATE ROLE pguser WITH LOGIN PASSWORD 'pguser123' CREATEDB;
+
+$ psql -U pguser -W postgres
+postgres=> create database starsdb;
+
+$ psql -U pguser -W starsdb
+starsdb=> CREATE TABLE starstb (
+starsdb(> id smallserial PRIMARY KEY,
+starsdb(> cnsName varchar(20) NOT NULL,
+starsdb(> raH smallint,
+starsdb(> raM smallint,
+starsdb(> raS real,
+starsdb(> raRAD real,
+starsdb(> decD smallint,
+starsdb(> decAM smallint,
+starsdb(> decAS smallint,
+starsdb(> decRAD real,
+starsdb(> trigPAR real,
+starsdb(> distLY real,
+starsdb(> specTYPE varchar(10),
+starsdb(> vMAG real,
+starsdb(> comNAME varchar(50)
+);
+
